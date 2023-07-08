@@ -1,7 +1,7 @@
 package renderer;
 
 import game.Board;
-import game.Position;
+import game.Pair;
 import processing.core.PApplet;
 
 public class BoardRenderer extends PApplet {
@@ -31,13 +31,13 @@ public class BoardRenderer extends PApplet {
 		
 		makeGrid();
 		
-		for(Position p: this.refBoard.getPositionsWithState(2)) {
-			make_cross(p.row, p.col);
+		for(Pair<Integer, Integer> p: this.refBoard.getPositionsWithState(2)) {
+			make_cross(p.first(), p.second());
 		}
 		
 		
-		for(Position p: this.refBoard.getPositionsWithState(1)) {
-			make_circle(p.row, p.col);
+		for(Pair<Integer, Integer> p: this.refBoard.getPositionsWithState(1)) {
+			make_circle(p.first(), p.second());
 		}
 		
 	}

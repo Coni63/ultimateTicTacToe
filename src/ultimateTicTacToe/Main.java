@@ -2,6 +2,7 @@ package ultimateTicTacToe;
 
 import game.Board;
 import game.MemoryTable;
+import game.MiniBoard;
 import renderer.BoardRenderer;
 
 public class Main {
@@ -10,23 +11,21 @@ public class Main {
 		// TODO Auto-generated method stub
 		System.out.println("Main");
 		
-		MemoryTable table = new MemoryTable();
+		MiniBoard root = new MiniBoard();
+		
+		long start1 = System.nanoTime();
+		MemoryTable.computeChilds(root);
+		long end1 = System.nanoTime();      
+        System.out.println("Generated the mapping in "+ (end1-start1)/1000000 + "ms.");      
 		
 		
-		System.out.println(table.lookupTable.size());
 		
-		System.out.println(table.getGrid(0, 8, 2));
-		System.out.println(table.getGrid(120022111, 8, 2));
-		System.out.println(table.getGrid(120022111, 2, 1));
-		System.out.println(table.getGrid(0, 0, 1));
+		Board board = new Board(root);
 		
-		
-		Board board = new Board(table);
-		
-		board.setState(0, 0, 1);
-		board.setState(4, 0, 2);
-		board.setState(8, 8, 2);
-		board.setState(7, 2, 2);
+		board.play(0, 0, 1);
+		board.play(4, 0, 2);
+		board.play(8, 8, 2);
+		board.play(7, 2, 2);
 		
 		BoardRenderer renderer = new BoardRenderer(board);
 		
@@ -37,6 +36,7 @@ public class Main {
 		        e.printStackTrace();
 		    }
 		}
+		
 	}
 
 }

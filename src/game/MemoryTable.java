@@ -1,25 +1,16 @@
 package game;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
+import java.util.Set;
 
 
 public class MemoryTable {
 	
-	public Map<Integer, MiniBoard> lookupTable;
-	
-	
-	public MemoryTable()
-	{
-		long start1 = System.nanoTime();
-		this.computeMapping();
-		long end1 = System.nanoTime();      
-        System.out.println("Generated the mapping in "+ (end1-start1)/1000000 + "ms.");      
-	}
-	
-	private void computeMapping()
+	public static void computeChilds(MiniBoard root)
 	{	
 		/*
 		 * Create a Table and compute every grid combinations (3^9)
@@ -33,50 +24,53 @@ public class MemoryTable {
 		 * 	}
 		 * }
 		 * */
-		this.lookupTable = new HashMap<Integer, MiniBoard>();
+		Map<String, MiniBoard> lookupTable = new HashMap<String, MiniBoard>();
 		
-		Queue<Integer> to_process = new LinkedList<Integer>();
-		to_process.add(0);
+		Set<String> done = new HashSet<String>();
+		Queue<MiniBoard> to_process = new LinkedList<MiniBoard>();
+		to_process.add(root);
+		lookupTable.put(root.hash, root);
 		
 		while (!to_process.isEmpty())
 		{
-			int boardState = to_process.remove();
+			MiniBoard currentBoard = to_process.remove();
 			
 			// if we already explored this state, skip
-			if (this.lookupTable.containsKey(boardState)) {
+			if (done.contains(currentBoard.hash)) {
 				continue;
 			}
 			
-			// create the dictionary for the results
-			MiniBoard miniBoard = new MiniBoard(boardState);
-			this.lookupTable.put(boardState, miniBoard);
+			if (currentBoard.isOver)
+			{
+				continue;
+			}
 			
 			// compute every childs
 			for (int team = 1; team < 3; team++)
 			{
 				for (int index = 0; index < 9; index++)
 				{
-					int offset = (int)Math.pow(10, 8-index);                // position of the team play
-					if ((int)(boardState / offset) % 10 == 0) {             // if the position is free
-						int newBoardState = boardState + offset * team;     // create the new state
-						MiniBoard nextMiniBoard = new MiniBoard(newBoardState);
-						int move = team * 10 + index;                       // compute the equivalent move value
-						miniBoard.setChild(team, index, nextMiniBoard);
+					if (currentBoard.grid[index] == 0) {             // if the position is free
 						
-						to_process.add(newBoardState);                      // we need to explore the new state 
+						int[] newGrid = new int[9];
+						System.arraycopy(currentBoard.grid, 0, newGrid, 0, 9);
+						newGrid[index] = team;
+						
+						String newHash = MiniBoard.getHashFromArray(newGrid);
+						if (!lookupTable.containsKey(newHash)) {
+							lookupTable.put(newHash, new MiniBoard(newGrid));
+						}
+						
+						to_process.add(lookupTable.get(newHash));
+						currentBoard.setChild(team, index, lookupTable.get(newHash));
 					}
 				}	
 			}
+			
+			done.add(currentBoard.hash);
 		}
+		
+		System.out.println(lookupTable.size());
 	}
-	
-	public MiniBoard getGrid(int fromGrid, int index, int team)
-	{
-		/*
-		 * Return the new grid encoded based on the state of the board, the player and the index played
-		 * */
-		return this.lookupTable.get(fromGrid).getChild(team, index);
-	}
-	
 	
 }
