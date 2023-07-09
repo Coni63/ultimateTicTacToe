@@ -1,8 +1,11 @@
-package game;
+package test.game;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
+
+import game.Converter;
+import game.Pair;
 
 class ConverterTest {
 
