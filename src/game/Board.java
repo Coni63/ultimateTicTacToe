@@ -6,16 +6,19 @@ import java.util.List;
 
 
 public class Board {
-	MiniBoard[] grids;
-	MiniBoard major;
-	MemoryTable memory;
-	Pair<Integer, Integer> lastMove;
-	private MiniBoard refRoot;
+	private MiniBoard refRoot;        // reference to the root of the state tree (empty Board) -- required for reset
+	
+	private MiniBoard[] subBoard;     // array of TicTacToe Board
+	MiniBoard mainBoard;                  // TicTacToe of the main board
+	Pair<Integer, Integer> lastMove;  // store the last move in relative state (subboard, index played)
 	
 	public Board(MiniBoard emptyBoard)
 	{
+		/*
+		 * Initialize an empty board game that refer the root of the board state tree
+		 * */
 		this.refRoot = emptyBoard;
-		this.grids = new MiniBoard[9];
+		this.subBoard = new MiniBoard[9];
 		
 		reset();
 	}
@@ -23,13 +26,18 @@ public class Board {
 	public void play(int subgrid, int index, int team)
 	{
 		/*
-		 * Update the state of this grid
+		 * Update the state of the played miniboard
+		 * Update the main board if the subboard is won
+		 * However there is a bug for the main board. The state of the subboard can be "no winner" = -1.
+		 * And there is no state for the MiniBoard in that case
+		 * This is handled with a custom Exception in getAvailablePosition
 		 * */
-		this.grids[subgrid] = this.grids[subgrid].getChild(team, index);
+		this.subBoard[subgrid] = this.subBoard[subgrid].getChild(team, index);
 		
-		if (this.grids[subgrid].winner > 0)
+		if (this.subBoard[subgrid].isOver)
 		{
-			this.major = this.major.getChild(this.grids[subgrid].winner, subgrid);
+			// update the mainboard
+			this.mainBoard = this.mainBoard.getChild(team, subgrid);
 		}
 		
 		lastMove = new Pair<Integer, Integer>(subgrid, index);
@@ -37,30 +45,40 @@ public class Board {
 	
 	public int winner()
 	{
-		return this.major.winner;
+		return this.mainBoard.winner;
+	}
+	
+	public boolean isOver()
+	{
+		// the main board can be mentionned as not over even if there is no move. 
+		// this is because the related subgrid can be over but not won
+		return this.mainBoard.isOver;
 	}
 	
 	public void reset()
 	{		
+		/*
+		 * Set or reset the board to a new state
+		 * */
 		for (int i = 0; i < 9; i++)
 		{
-			this.grids[i] = this.refRoot;
+			this.subBoard[i] = this.refRoot;
 		}
 		
-		this.major = this.refRoot;
+		this.mainBoard = this.refRoot;
 		this.lastMove = new Pair<Integer, Integer>(-1, -1);
 	}
 	
-	public List<Pair<Integer, Integer>> getAvailablePosition()
+	public List<Pair<Integer, Integer>> getAvailablePosition() throws GameOverException
 	{
 		int previousIndex = lastMove.second();
 		List<Pair<Integer, Integer>> positions = new LinkedList<Pair<Integer, Integer>>();
 
-		if (previousIndex == -1 || this.grids[previousIndex].isOver)
+		if (previousIndex == -1 || this.subBoard[previousIndex].isOver)
 		{
 			for (int subboard = 0; subboard < 9; subboard++)
-			{
-				for (int index: this.grids[subboard].getIndexWithStates(0))
+			{				
+				for (int index: this.subBoard[subboard].getIndexWithStates(0))
 				{
 					positions.add(new Pair(subboard, index));
 				}
@@ -68,28 +86,29 @@ public class Board {
 		}
 		else
 		{
-			for (int index: this.grids[previousIndex].getIndexWithStates(0))
+			for (int index: this.subBoard[previousIndex].getIndexWithStates(0))
 			{
 				positions.add(new Pair(previousIndex, index));
 			}
 		}
 		
+		if (positions.size() == 0)
+		{
+			throw new GameOverException("No moves remaining - Tie");
+		}
+		
 		return positions;
-	}
-	
-	public boolean isOver()
-	{
-		return this.major.isOver;
 	}
 	
 	public List<Pair<Integer, Integer>> getPositionsWithState(int state) {
 		/*
 		 * Return a list of relative positions of a given state
+		 * Required for the renderer
 		 * */
 		List<Pair<Integer, Integer>> positions = new ArrayList<Pair<Integer, Integer>>();
 		for (int subgrid = 0; subgrid < 9; subgrid++)
 		{
-			for (int index: this.grids[subgrid].getIndexWithStates(state))
+			for (int index: this.subBoard[subgrid].getIndexWithStates(state))
 			{
 				positions.add(Converter.toAbsolute(subgrid, index));
 			}
@@ -101,8 +120,8 @@ public class Board {
 	public List<Integer> getMajorPositionsWithState(int state) {
 		/*
 		 * Return a list of relative positions of a given state
+		 * Required for the renderer
 		 * */
-		
-		return this.major.getIndexWithStates(state);
+		return this.mainBoard.getIndexWithStates(state);
 	}
 }

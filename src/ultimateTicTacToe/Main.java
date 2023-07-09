@@ -1,7 +1,7 @@
 package ultimateTicTacToe;
 
 import game.Board;
-import game.MemoryTable;
+import game.TreeState;
 import game.MiniBoard;
 import renderer.BoardRenderer;
 
@@ -10,11 +10,10 @@ import agents.random.AgentRandom;
 public class Main {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub		
 		
 		long start1 = System.nanoTime();
 		MiniBoard root = new MiniBoard();
-		MemoryTable.computeChilds(root);
+		TreeState.computeChilds(root);
 		long end1 = System.nanoTime();      
         System.out.println("Tree generated in "+ (end1-start1)/1000000 + "ms.");      
 		

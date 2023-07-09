@@ -3,11 +3,13 @@ package game;
 public class Converter {	
 	public static Pair<Integer, Integer> toAbsolute(int subgrid, int index)
 	{
+		// Convert a position from (subgrid, index) to (row, col)
 		return Converter.convert(subgrid, index);
 	}
 	
 	public static Pair<Integer, Integer> toRelative(int row, int col)
 	{
+		// Convert a position from (row, col) to (subgrid, index)
 		return Converter.convert(row, col);
 	}
 	

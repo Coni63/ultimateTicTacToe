@@ -11,6 +11,7 @@ public class BoardRenderer extends PApplet {
 	String name2 = "Agent2";
 	int score1;
 	int score2;
+	int scoreTie;
 	
 	Board refBoard;
 	
@@ -55,12 +56,13 @@ public class BoardRenderer extends PApplet {
 		}
 	}
 	
-	public void setHeaderInfo(String name1, String name2, int score1, int score2)
+	public void setHeaderInfo(String name1, String name2, int score1, int score2, int tie)
 	{
 		this.name1 = name1;
 		this.name2 = name2;
 		this.score1 = score1;
 		this.score2 = score2;
+		this.scoreTie = tie;
 	}
 
 	private void makeHeader()
@@ -71,6 +73,10 @@ public class BoardRenderer extends PApplet {
 		textAlign(RIGHT);
 		text(this.name1, 10 * this.width, this.width); 
 		text(this.score1, 10 * this.width, this.width + 48); 
+		
+		textAlign(CENTER);
+		text("Tie", (int)(5.5 * this.width), this.width); 
+		text(this.scoreTie, (int)(5.5 * this.width), this.width + 48); 
 		
 		textAlign(LEFT);
 		text(this.name2, width, width);

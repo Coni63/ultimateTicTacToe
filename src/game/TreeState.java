@@ -8,21 +8,19 @@ import java.util.Queue;
 import java.util.Set;
 
 
-public class MemoryTable {
+public class TreeState {
 	
 	public static void computeChilds(MiniBoard root)
 	{	
-		/*
-		 * For each miniBoard, compute all childs.
-		 * Multiple moves combinations can lead to the same state so a lookup table is created
-		 * */
+		// For each miniBoard, compute all childs.
+		// Multiple moves combinations can lead to the same state so a lookup table is created
 		
-		Map<String, MiniBoard> lookupTable = new HashMap<String, MiniBoard>();
+		Map<String, MiniBoard> lookupTable = new HashMap<String, MiniBoard>();  // mapping for a state -> instance to avoid duplicates
 		lookupTable.put(root.hash, root);
 
-		Set<String> done = new HashSet<String>();
+		Set<String> done = new HashSet<String>();  // store all the states processed in term of exploration
 		
-		Queue<MiniBoard> to_process = new LinkedList<MiniBoard>();
+		Queue<MiniBoard> to_process = new LinkedList<MiniBoard>();  // queue of boards to evaluate -- BFS 
 		to_process.add(root);
 		
 		while (!to_process.isEmpty())
@@ -53,7 +51,7 @@ public class MemoryTable {
 						to_process.add(lookupTable.get(newHash));
 						currentBoard.setChild(team, index, lookupTable.get(newHash));
 					}
-				}	
+				}
 			}
 			
 			done.add(currentBoard.hash);

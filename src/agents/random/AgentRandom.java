@@ -5,6 +5,7 @@ import java.util.Random;
 
 import agents.AbstractAgent;
 import game.Board;
+import game.GameOverException;
 import game.Pair;
 
 
@@ -16,17 +17,21 @@ public class AgentRandom extends AbstractAgent {
 		this.name = "Random_v1";
 	}
 	
-	public Pair<Integer, Integer> getMove()
+	public Pair<Integer, Integer> getMove() throws GameOverException
 	{
 		Random rand = new Random();
-		List<Pair<Integer, Integer>> positions = this.board.getAvailablePosition();
 		
-		if (positions.size() == 0)
+		try
 		{
-			return new Pair<Integer, Integer>(-1, -1);
+			List<Pair<Integer, Integer>> positions = this.board.getAvailablePosition();
+			return positions.get(rand.nextInt(positions.size()));			
+		}
+		catch (GameOverException e)
+		{
+			System.out.println("flkjdgsh");
+			throw e;
 		}
 		
-		return positions.get(rand.nextInt(positions.size()));
 		
 	}
 }

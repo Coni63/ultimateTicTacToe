@@ -5,6 +5,7 @@ import java.util.Random;
 
 import agents.AbstractAgent;
 import game.Board;
+import game.GameOverException;
 import game.Pair;
 
 public class MCTS1 extends AbstractAgent { 
@@ -15,7 +16,7 @@ public class MCTS1 extends AbstractAgent {
 		this.name = "MCTS_v1";
 	}
 	
-	public Pair<Integer, Integer> getMove()
+	public Pair<Integer, Integer> getMove() throws GameOverException
 	{
 		Random rand = new Random();
 		List<Pair<Integer, Integer>> positions = this.board.getAvailablePosition();
