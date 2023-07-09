@@ -16,4 +16,13 @@ public class Pair<X, Y> {
     public Y second() {
         return m_second;
     }
+    
+    public boolean equals(Pair<X, Y> other)
+    {
+    	return (this.first() == other.first()) && (this.second() == other.second());
+    }
+    
+    public void show() {
+    	System.out.println("Pair("+this.first()+","+this.second()+")");
+    }
 }

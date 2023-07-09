@@ -13,35 +13,24 @@ public class MemoryTable {
 	public static void computeChilds(MiniBoard root)
 	{	
 		/*
-		 * Create a Table and compute every grid combinations (3^9)
-		 * A grid is a 9 digit number containing the team at each position
-		 * A move is the team (1 or 2) and the index played (0 to 8)
-		 * A move is 10 * team + index
-		 * can be seen a {
-		 * 	0: {
-		 * 		10: 100000000    # the team 1 play in index 0. On an empty board, the result is a board 100000000
-		 * 		... and this for all the 18 moves (if valid)
-		 * 	}
-		 * }
+		 * For each miniBoard, compute all childs.
+		 * Multiple moves combinations can lead to the same state so a lookup table is created
 		 * */
-		Map<String, MiniBoard> lookupTable = new HashMap<String, MiniBoard>();
 		
+		Map<String, MiniBoard> lookupTable = new HashMap<String, MiniBoard>();
+		lookupTable.put(root.hash, root);
+
 		Set<String> done = new HashSet<String>();
+		
 		Queue<MiniBoard> to_process = new LinkedList<MiniBoard>();
 		to_process.add(root);
-		lookupTable.put(root.hash, root);
 		
 		while (!to_process.isEmpty())
 		{
 			MiniBoard currentBoard = to_process.remove();
 			
-			// if we already explored this state, skip
-			if (done.contains(currentBoard.hash)) {
-				continue;
-			}
-			
-			if (currentBoard.isOver)
-			{
+			// if we already explored this state or the board is an end state
+			if (currentBoard.isOver || done.contains(currentBoard.hash)) {
 				continue;
 			}
 			
@@ -50,7 +39,7 @@ public class MemoryTable {
 			{
 				for (int index = 0; index < 9; index++)
 				{
-					if (currentBoard.grid[index] == 0) {             // if the position is free
+					if (currentBoard.grid[index] == 0) {  // if the position is free
 						
 						int[] newGrid = new int[9];
 						System.arraycopy(currentBoard.grid, 0, newGrid, 0, 9);
@@ -70,7 +59,7 @@ public class MemoryTable {
 			done.add(currentBoard.hash);
 		}
 		
-		System.out.println(lookupTable.size());
+		// System.out.println(lookupTable.size());
 	}
 	
 }

@@ -1,12 +1,12 @@
 package game;
 
 public class Converter {	
-	public static Pair<Integer, Integer> to_absolute(int subgrid, int index)
+	public static Pair<Integer, Integer> toAbsolute(int subgrid, int index)
 	{
 		return Converter.convert(subgrid, index);
 	}
 	
-	public static Pair<Integer, Integer> to_relative(int row, int col)
+	public static Pair<Integer, Integer> toRelative(int row, int col)
 	{
 		return Converter.convert(row, col);
 	}
