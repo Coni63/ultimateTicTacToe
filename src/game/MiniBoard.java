@@ -72,16 +72,7 @@ public class MiniBoard {
 	}
 	
 	private void computeWinner()
-	{
-		// if there is no remaining spaces
-		if (this.states.get(0).size() == 0)
-		{
-			this.isOver = true;
-		}
-		
-		this.winner = -1; // no winner
-		this.isOver = false;
-		// check rows
+	{		
         if (this.isWinner(1)) 
         {
         	this.winner = 1;
@@ -97,7 +88,12 @@ public class MiniBoard {
 			this.isOver = true;
 			this.winner = 0;
 		}
-        
+        else
+        {        	
+        	// no winner
+        	this.winner = -1; 
+        	this.isOver = false;
+        }
 	}
 	
 	private boolean isWinner(int player) {

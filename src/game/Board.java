@@ -9,16 +9,15 @@ public class Board {
 	MiniBoard[] grids;
 	MiniBoard major;
 	MemoryTable memory;
+	Pair<Integer, Integer> lastMove;
+	private MiniBoard refRoot;
 	
-	public Board(MiniBoard emptyBoard) {
+	public Board(MiniBoard emptyBoard)
+	{
+		this.refRoot = emptyBoard;
 		this.grids = new MiniBoard[9];
 		
-		for (int i = 0; i < 9; i++)
-		{
-			this.grids[i] = emptyBoard;
-		}
-		
-		this.major = emptyBoard;
+		reset();
 	}
 	
 	public void play(int subgrid, int index, int team)
@@ -28,17 +27,33 @@ public class Board {
 		 * */
 		this.grids[subgrid] = this.grids[subgrid].getChild(team, index);
 		
-		
 		if (this.grids[subgrid].winner > 0)
 		{
-			System.out.println(subgrid + " won by " + this.grids[subgrid].winner);
 			this.major = this.major.getChild(this.grids[subgrid].winner, subgrid);
-			System.out.println(this.major.hash);
 		}
+		
+		lastMove = new Pair<Integer, Integer>(subgrid, index);
 	}
 	
-	public List<Pair<Integer, Integer>> getAvailablePosition(int previousIndex)
+	public int winner()
 	{
+		return this.major.winner;
+	}
+	
+	public void reset()
+	{		
+		for (int i = 0; i < 9; i++)
+		{
+			this.grids[i] = this.refRoot;
+		}
+		
+		this.major = this.refRoot;
+		this.lastMove = new Pair<Integer, Integer>(-1, -1);
+	}
+	
+	public List<Pair<Integer, Integer>> getAvailablePosition()
+	{
+		int previousIndex = lastMove.second();
 		List<Pair<Integer, Integer>> positions = new LinkedList<Pair<Integer, Integer>>();
 
 		if (previousIndex == -1 || this.grids[previousIndex].isOver)
