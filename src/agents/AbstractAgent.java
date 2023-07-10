@@ -2,7 +2,6 @@ package agents;
 
 import game.Pair;
 import game.Board;
-import game.GameOverException;
 
 public abstract class AbstractAgent {
 	public int team;

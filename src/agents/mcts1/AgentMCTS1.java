@@ -5,12 +5,11 @@ import java.util.Random;
 
 import agents.AbstractAgent;
 import game.Board;
-import game.GameOverException;
 import game.Pair;
 
-public class MCTS1 extends AbstractAgent { 
+public class AgentMCTS1 extends AbstractAgent { 
 		
-	public MCTS1(int team, Board board)
+	public AgentMCTS1(int team, Board board)
 	{
 		super(team, board);
 		this.name = "MCTS_v1";

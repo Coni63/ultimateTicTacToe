@@ -2,7 +2,6 @@ package ultimateTicTacToe;
 
 import agents.AbstractAgent;
 import game.Board;
-import game.GameOverException;
 import game.Pair;
 import renderer.BoardRenderer;
 

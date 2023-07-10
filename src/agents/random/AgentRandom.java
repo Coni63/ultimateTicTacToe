@@ -5,7 +5,6 @@ import java.util.Random;
 
 import agents.AbstractAgent;
 import game.Board;
-import game.GameOverException;
 import game.Pair;
 
 
