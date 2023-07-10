@@ -71,16 +71,16 @@ public class BoardRenderer extends PApplet {
 		textSize(48);
 		
 		textAlign(RIGHT);
-		text(this.name1, 10 * this.width, this.width); 
-		text(this.score1, 10 * this.width, this.width + 48); 
+		text(this.name2, 10 * this.width, this.width); 
+		text(this.score2, 10 * this.width, this.width + 48); 
 		
 		textAlign(CENTER);
 		text("Tie", (int)(5.5 * this.width), this.width); 
 		text(this.scoreTie, (int)(5.5 * this.width), this.width + 48); 
 		
 		textAlign(LEFT);
-		text(this.name2, width, width);
-		text(this.score2, width, width + 48); 
+		text(this.name1, width, width);
+		text(this.score1, width, width + 48); 
 	}
 	
 	private void makeGrid() {				
