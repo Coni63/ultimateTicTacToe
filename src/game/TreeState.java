@@ -10,7 +10,7 @@ import java.util.Set;
 
 public class TreeState {
 	
-	public static void computeChilds(MiniBoard root)
+	public static Map<String, MiniBoard> computeChilds(MiniBoard root)
 	{	
 		// For each miniBoard, compute all childs.
 		// Multiple moves combinations can lead to the same state so a lookup table is created
@@ -57,6 +57,7 @@ public class TreeState {
 			done.add(currentBoard.hash);
 		}
 		
+		return lookupTable;
 		// System.out.println(lookupTable.size());
 	}
 	

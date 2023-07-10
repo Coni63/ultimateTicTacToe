@@ -8,11 +8,11 @@ import java.util.List;
 
 
 public class MiniBoard {
-	List<List<Integer>> states;      // list of index with every states
-	Map<Integer, MiniBoard> childs;  // Dictionary of moves ->  Board state
-	boolean isOver;
-	int winner; 
-	int[] grid;                      // values of the grid flatten
+	private List<List<Integer>> states;      // list of index with every states
+	private Map<Integer, MiniBoard> childs;  // Dictionary of moves ->  Board state
+	public boolean isOver;
+	public int winner; 
+	public int[] grid;                      // values of the grid flatten
 	public String hash;              // simple hash used to handle duplicated State
 	
 	public MiniBoard(int[] grid)

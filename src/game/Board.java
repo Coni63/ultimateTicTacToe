@@ -10,9 +10,8 @@ public class Board {
 	
 	private MiniBoard[] subBoard;     // array of TicTacToe Board
 	MiniBoard mainBoard;                  // TicTacToe of the main board
-	Pair<Integer, Integer> lastMove;  // store the last move in relative state (subboard, index played)
-	int boardCompleted = 0;
-	
+	private Pair<Integer, Integer> lastMove;  // store the last move in relative state (subboard, index played)
+	private int boardCompleted = 0;
 	
 	public Board(MiniBoard emptyBoard)
 	{
