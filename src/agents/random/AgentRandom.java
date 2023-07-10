@@ -17,21 +17,12 @@ public class AgentRandom extends AbstractAgent {
 		this.name = "Random_v1";
 	}
 	
-	public Pair<Integer, Integer> getMove() throws GameOverException
+	public Pair<Integer, Integer> getMove()
 	{
 		Random rand = new Random();
 		
-		try
-		{
-			List<Pair<Integer, Integer>> positions = this.board.getAvailablePosition();
-			return positions.get(rand.nextInt(positions.size()));			
-		}
-		catch (GameOverException e)
-		{
-			System.out.println("flkjdgsh");
-			throw e;
-		}
-		
-		
+		List<Pair<Integer, Integer>> positions = this.board.getAvailablePosition();
+		return positions.get(rand.nextInt(positions.size()));			
+
 	}
 }

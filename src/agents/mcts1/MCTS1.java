@@ -16,15 +16,10 @@ public class MCTS1 extends AbstractAgent {
 		this.name = "MCTS_v1";
 	}
 	
-	public Pair<Integer, Integer> getMove() throws GameOverException
+	public Pair<Integer, Integer> getMove()
 	{
 		Random rand = new Random();
 		List<Pair<Integer, Integer>> positions = this.board.getAvailablePosition();
-		
-		if (positions.size() == 0)
-		{
-			return new Pair<Integer, Integer>(-1, -1);
-		}
 		
 		return positions.get(rand.nextInt(positions.size()));
 		

@@ -11,6 +11,8 @@ public class Board {
 	private MiniBoard[] subBoard;     // array of TicTacToe Board
 	MiniBoard mainBoard;                  // TicTacToe of the main board
 	Pair<Integer, Integer> lastMove;  // store the last move in relative state (subboard, index played)
+	int boardCompleted = 0;
+	
 	
 	public Board(MiniBoard emptyBoard)
 	{
@@ -38,6 +40,7 @@ public class Board {
 		{
 			// update the mainboard
 			this.mainBoard = this.mainBoard.getChild(team, subgrid);
+			this.boardCompleted++;
 		}
 		
 		lastMove = new Pair<Integer, Integer>(subgrid, index);
@@ -52,7 +55,7 @@ public class Board {
 	{
 		// the main board can be mentionned as not over even if there is no move. 
 		// this is because the related subgrid can be over but not won
-		return this.mainBoard.isOver;
+		return this.mainBoard.isOver || this.boardCompleted == 9;
 	}
 	
 	public void reset()
@@ -67,9 +70,10 @@ public class Board {
 		
 		this.mainBoard = this.refRoot;
 		this.lastMove = new Pair<Integer, Integer>(-1, -1);
+		this.boardCompleted = 0;
 	}
 	
-	public List<Pair<Integer, Integer>> getAvailablePosition() throws GameOverException
+	public List<Pair<Integer, Integer>> getAvailablePosition()
 	{
 		int previousIndex = lastMove.second();
 		List<Pair<Integer, Integer>> positions = new LinkedList<Pair<Integer, Integer>>();
@@ -90,11 +94,6 @@ public class Board {
 			{
 				positions.add(new Pair(previousIndex, index));
 			}
-		}
-		
-		if (positions.size() == 0)
-		{
-			throw new GameOverException("No moves remaining - Tie");
 		}
 		
 		return positions;

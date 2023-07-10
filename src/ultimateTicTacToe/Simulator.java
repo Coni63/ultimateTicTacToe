@@ -62,15 +62,8 @@ public class Simulator {
 				
 				currentAgent = currentAgent == this.agent1 ? this.agent2 : this.agent1;
 				
-				try {
-					Pair<Integer, Integer> chosenPosition = currentAgent.getMove();
-					this.board.play(chosenPosition.first(), chosenPosition.second(), currentAgent.team);					
-				}
-				catch (GameOverException e)
-				{
-					return 0; // no winner - Tie
-				}
-				
+				Pair<Integer, Integer> chosenPosition = currentAgent.getMove();
+				this.board.play(chosenPosition.first(), chosenPosition.second(), currentAgent.team);					
 				
 				Thread.sleep(1); // Wait for 1 second (1000 milliseconds)
 			} catch (InterruptedException e) {

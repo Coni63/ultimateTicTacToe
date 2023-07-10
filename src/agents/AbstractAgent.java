@@ -15,7 +15,7 @@ public abstract class AbstractAgent {
 		this.board = board;
 	}
 	
-	public abstract Pair<Integer, Integer> getMove() throws GameOverException;
+	public abstract Pair<Integer, Integer> getMove();
 	
 	public String getName()
 	{
