@@ -9,7 +9,7 @@ public class Board {
 	private MiniBoard refRoot;        // reference to the root of the state tree (empty Board) -- required for reset
 	
 	private MiniBoard[] subBoard;     // array of TicTacToe Board
-	MiniBoard mainBoard;                  // TicTacToe of the main board
+	private MiniBoard mainBoard;                  // TicTacToe of the main board
 	private Pair<Integer, Integer> lastMove;  // store the last move in relative state (subboard, index played)
 	private int boardCompleted = 0;
 	
