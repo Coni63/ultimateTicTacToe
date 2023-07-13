@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -130,19 +131,51 @@ class BoardTest {
 		board.play(0, 1, 2);
 		board.play(0, 2, 2);
 		
-		List<Pair<Integer, Integer>> mainBoardWon = board.getPositionsWithState(2);
-		assertEquals(mainBoardWon, Arrays.asList(new Pair(0, 0), new Pair(0, 1), new Pair(0, 2)));
-		
-		mainBoardWon = board.getPositionsWithState(2);
-		assertEquals(mainBoardWon, Arrays.asList(new Pair(2, 0)));
+		List<Pair<Integer, Integer>> positionsConquered = board.getPositionsWithState(2);
+		assertEquals(positionsConquered.size(), 3);
+		assertEquals(positionsConquered.stream().map(position -> position.second()).collect(Collectors.toList()), Arrays.asList(0, 1, 2));
 	}
 	
 	@Test
-	void testRendererMethods() {
-		//Board(MiniBoard emptyBoard)
-
-		//public List<Pair<Integer, Integer>> getPositionsWithState(int state) {
-			
-		//public List<Integer> getMajorPositionsWithState(int state) {
+	void testClone()
+	{
+		Board board = new Board(root);
+		
+		board.play(0, 0, 2);
+		board.play(2, 0, 1);
+		board.play(0, 1, 2);
+		board.play(0, 2, 2);
+		
+		Board copy = board.Clone();
+		
+		// update only the copy to check that only the copy changed
+		copy.play(1, 0, 2);  // col 3 row 1 in absolute
+		copy.play(1, 1, 2);  // col 3 row 1 in absolute
+		copy.play(1, 2, 2);  // col 3 row 1 in absolute
+		
+		// check that the initial board did not change
+		List<Pair<Integer, Integer>> positionsConquered = board.getPositionsWithState(2);
+		assertEquals(positionsConquered.size(), 3);
+		assertEquals(positionsConquered.stream().map(position -> position.second()).collect(Collectors.toList()), Arrays.asList(0, 1, 2));
+		
+		List<Integer> mainBoardWon = board.getMajorPositionsWithState(2);
+		assertEquals(mainBoardWon.size(), 1);
+		
+		// check that the copy is updated
+		positionsConquered = copy.getPositionsWithState(2);
+		assertEquals(positionsConquered.size(), 6);
+		assertEquals(positionsConquered.stream().map(position -> position.second()).collect(Collectors.toList()), Arrays.asList(0, 1, 2, 3, 4, 5));
+		
+		mainBoardWon = copy.getMajorPositionsWithState(2);
+		assertEquals(mainBoardWon.size(), 2);
+		
+		// check reset
+		copy.reset();
+		
+		mainBoardWon = copy.getMajorPositionsWithState(2);
+		assertEquals(mainBoardWon.size(), 0);
+		
+		mainBoardWon = board.getMajorPositionsWithState(2);
+		assertEquals(mainBoardWon.size(), 1);
 	}
 }

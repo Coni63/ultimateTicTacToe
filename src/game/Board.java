@@ -24,6 +24,20 @@ public class Board {
 		reset();
 	}
 	
+	public Board(MiniBoard emptyBoard, MiniBoard[] subBoards, MiniBoard mainBoard, Pair<Integer, Integer> lastMove, int boardCompleted)
+	{
+		/*
+		 * Initialize an empty board game that refer the root of the board state tree
+		 * */
+		this.subBoard = new MiniBoard[9];
+		System.arraycopy(subBoards, 0, this.subBoard, 0, 9);
+		
+		this.refRoot = emptyBoard;
+		this.mainBoard = mainBoard;
+		this.lastMove = lastMove;
+		this.boardCompleted = boardCompleted;
+	}
+	
 	public void play(int subgrid, int index, int team)
 	{
 		/*
@@ -43,6 +57,12 @@ public class Board {
 		}
 		
 		lastMove = new Pair<Integer, Integer>(subgrid, index);
+	}
+	
+	public Board Clone()
+	{
+		// make a copy of the board but don't instantiate new state
+		return new Board(this.refRoot, this.subBoard, this.mainBoard, this.lastMove, this.boardCompleted);
 	}
 	
 	public int winner()
@@ -83,7 +103,7 @@ public class Board {
 			{				
 				for (int index: this.subBoard[subboard].getIndexWithStates(0))
 				{
-					positions.add(new Pair(subboard, index));
+					positions.add(new Pair<Integer, Integer>(subboard, index));
 				}
 			}			
 		}
@@ -91,7 +111,7 @@ public class Board {
 		{
 			for (int index: this.subBoard[previousIndex].getIndexWithStates(0))
 			{
-				positions.add(new Pair(previousIndex, index));
+				positions.add(new Pair<Integer, Integer>(previousIndex, index));
 			}
 		}
 		
@@ -100,7 +120,7 @@ public class Board {
 	
 	public List<Pair<Integer, Integer>> getPositionsWithState(int state) {
 		/*
-		 * Return a list of relative positions of a given state
+		 * Return a list of absolute positions of a given state
 		 * Required for the renderer
 		 * */
 		List<Pair<Integer, Integer>> positions = new ArrayList<Pair<Integer, Integer>>();
