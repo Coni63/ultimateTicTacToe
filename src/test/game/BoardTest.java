@@ -149,9 +149,9 @@ class BoardTest {
 		Board copy = board.Clone();
 		
 		// update only the copy to check that only the copy changed
-		copy.play(1, 0, 2);  // col 3 row 1 in absolute
-		copy.play(1, 1, 2);  // col 3 row 1 in absolute
-		copy.play(1, 2, 2);  // col 3 row 1 in absolute
+		copy.play(1, 0, 2);  // col 3 row 0 in absolute
+		copy.play(1, 1, 2);  // col 4 row 0 in absolute
+		copy.play(1, 2, 2);  // col 5 row 0 in absolute
 		
 		// check that the initial board did not change
 		List<Pair<Integer, Integer>> positionsConquered = board.getPositionsWithState(2);

@@ -24,12 +24,12 @@ public class Simulator {
 		this.renderer.setHeaderInfo(agent1.getName(), agent2.getName(), scoreAgent1, scoreAgent2, scoreTie);		
 	}
 	
-	public void run()
+	public void run(int n, int timestepMs)
 	{
 		// run infinite number of games to evaluate bots in multiple games
 		
-		while (true) {  // on joue des parties à l'infini
-			int winner = this.playGame();
+		for (int i = 0; i < n; i++) {  // on joue des parties à l'infini
+			int winner = this.playGame(timestepMs);
 			
 			if (winner == 1)
 			{
@@ -48,7 +48,7 @@ public class Simulator {
 		}
 	}
 	
-	public int playGame()
+	public int playGame(int timestepMs)
 	{
 		// run 1 game until end of game
 		AbstractAgent currentAgent = agent1;
@@ -64,7 +64,7 @@ public class Simulator {
 				Pair<Integer, Integer> chosenPosition = currentAgent.getMove();
 				this.board.play(chosenPosition.first(), chosenPosition.second(), currentAgent.team);					
 				
-				Thread.sleep(1); // Wait for 1 second (1000 milliseconds)
+				Thread.sleep(timestepMs); // Wait for 1 second (1000 milliseconds)
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
