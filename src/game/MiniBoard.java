@@ -2,6 +2,7 @@ package game;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
@@ -10,10 +11,13 @@ import java.util.List;
 public class MiniBoard {
 	private Map<Integer, List<Integer>> states; // list of index with every states
 	private Map<Integer, MiniBoard> childs;     // Dictionary of moves ->  Board state
+	private List<MiniBoard> parents;            // list 
 	public boolean isOver;
 	public int winner; 
 	public int[] grid;                          // values of the grid flatten
 	public String hash;                         // simple hash used to handle duplicated State
+	public int balanceEndstate;                 // sum of winner - if balance 0, 
+	public int totalEndstate;                   // total of possible endstates from this states
 	
 	public MiniBoard(int[] grid)
 	{
@@ -34,9 +38,12 @@ public class MiniBoard {
 	private void initBoard()
 	{
 		this.childs = new HashMap<Integer, MiniBoard>();
-		
+		this.parents = new ArrayList<MiniBoard>();
 		this.computeStates();
 		this.computeWinner();
+		
+		this.balanceEndstate = 0;
+		this.totalEndstate = 0;
 	}
 	
 	public static String getHashFromArray(int[] grid)
@@ -57,6 +64,33 @@ public class MiniBoard {
 	{
 		// get the next state knowing the move done
 		return this.childs.getOrDefault(team*10 + index, this);
+	}
+	
+	public Collection<MiniBoard> getChilds()
+	{
+		// get the next state knowing the move done
+		return this.childs.values();
+	}
+	
+	public void addParent(MiniBoard parent)
+	{
+		this.parents.add(parent);
+	}
+	
+	public List<MiniBoard> getParents()
+	{
+		return this.parents;
+	}
+	
+	public void setStats(int winner)
+	{
+		this.balanceEndstate += winner;
+		this.totalEndstate++;
+	}
+	
+	public float getStats()
+	{
+		return (float)this.balanceEndstate / (float)this.totalEndstate;
 	}
 	
 	public List<Integer> getIndexWithStates(int team)

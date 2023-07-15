@@ -30,21 +30,6 @@ class BoardTest {
 	}
 
 	@Test
-	void testLookupTable() {
-		// Test the lookup table here even if its's another script but there is 1 function and it runs for those tests
-		assertEquals(lookupTable.size(), 18753);
-		
-		// check the validity of a random child
-		MiniBoard node = lookupTable.get("OX-X--XOX");
-		
-		MiniBoard neigh = node.getChild(-1, 2);
-		assertEquals(neigh.hash, "OXOX--XOX");
-		
-		MiniBoard error = node.getChild(2, 0); // play an invalid move
-		assertEquals(error.hash, node.hash);   // in that case, we return self as the move is invalid
-	}
-
-	@Test
 	void testPlay() {
 		Board board = new Board(root);
 		

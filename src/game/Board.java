@@ -77,6 +77,17 @@ public class Board {
 		return this.mainBoard.isOver || this.boardCompleted == 9;
 	}
 	
+	public float getStats()
+	{
+		float stats = 0f;
+		for (MiniBoard subboard: this.subBoard)
+		{
+			stats += subboard.getStats();
+		}
+		stats += 2 * this.mainBoard.getStats();
+		return stats / 9f;
+	}
+	
 	public void reset()
 	{		
 		/*

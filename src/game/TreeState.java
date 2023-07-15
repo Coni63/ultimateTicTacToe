@@ -50,8 +50,10 @@ public class TreeState {
 							lookupTable.put(newHash, new MiniBoard(newGrid));
 						}
 						
-						to_process.add(lookupTable.get(newHash));
-						currentBoard.setChild(team, index, lookupTable.get(newHash));
+						MiniBoard child = lookupTable.get(newHash);
+						child.addParent(currentBoard);
+						currentBoard.setChild(team, index, child);
+						to_process.add(child);
 					}
 				}
 			}
