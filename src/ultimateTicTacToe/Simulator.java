@@ -31,11 +31,11 @@ public class Simulator {
 		for (int i = 0; i < n; i++) {  // on joue des parties à l'infini
 			int winner = this.playGame(timestepMs);
 			
-			if (winner == 1)
+			if (winner == agent1.team)
 			{
 				this.scoreAgent1++;
 			}
-			else if (winner == 2)
+			else if (winner == agent2.team)
 			{
 				this.scoreAgent2++;
 			}
