@@ -35,10 +35,10 @@ class BoardTest {
 		assertEquals(lookupTable.size(), 18753);
 		
 		// check the validity of a random child
-		MiniBoard node = lookupTable.get("210100121");
+		MiniBoard node = lookupTable.get("OX-X--XOX");
 		
-		MiniBoard neigh = node.getChild(2, 2);
-		assertEquals(neigh.hash, "212100121");
+		MiniBoard neigh = node.getChild(-1, 2);
+		assertEquals(neigh.hash, "OXOX--XOX");
 		
 		MiniBoard error = node.getChild(2, 0); // play an invalid move
 		assertEquals(error.hash, node.hash);   // in that case, we return self as the move is invalid
@@ -48,12 +48,12 @@ class BoardTest {
 	void testPlay() {
 		Board board = new Board(root);
 		
-		board.play(0, 0, 2);
+		board.play(0, 0, -1);
 		board.play(2, 0, 1);
-		board.play(0, 1, 2);
-		board.play(0, 2, 2);
+		board.play(0, 1, -1);
+		board.play(0, 2, -1);
 		
-		List<Integer> mainBoardWon = board.getMajorPositionsWithState(2);
+		List<Integer> mainBoardWon = board.getMajorPositionsWithState(-1);
 		assertEquals(mainBoardWon, Arrays.asList(0));
 		
 		List<Pair<Integer, Integer>> movesAvailables = board.getAvailablePosition();
@@ -64,11 +64,11 @@ class BoardTest {
 	void testPlayFinishedBoard() {
 		Board board = new Board(root);
 		
-		board.play(0, 2, 2);
-		board.play(0, 1, 2);
-		board.play(0, 0, 2);
+		board.play(0, 2, -1);
+		board.play(0, 1, -1);
+		board.play(0, 0, -1);
 		
-		List<Integer> mainBoardWon = board.getMajorPositionsWithState(2);
+		List<Integer> mainBoardWon = board.getMajorPositionsWithState(-1);
 		assertEquals(mainBoardWon, Arrays.asList(0));
 		
 		List<Pair<Integer, Integer>> movesAvailables = board.getAvailablePosition();
@@ -79,25 +79,25 @@ class BoardTest {
 	void testWinner() {
 		Board board = new Board(root);
 		
-		board.play(0, 0, 2);
-		board.play(0, 1, 2);
-		board.play(0, 2, 2);
+		board.play(0, 0, -1);
+		board.play(0, 1, -1);
+		board.play(0, 2, -1);
 		
 		assertEquals(board.winner(), 0);
 		assertFalse(board.isOver());
 		
-		board.play(1, 0, 2);
-		board.play(1, 1, 2);
-		board.play(1, 2, 2);
+		board.play(1, 0, -1);
+		board.play(1, 1, -1);
+		board.play(1, 2, -1);
 		
 		assertEquals(board.winner(), 0);
 		assertFalse(board.isOver());
 		
-		board.play(2, 0, 2);
-		board.play(2, 1, 2);
-		board.play(2, 2, 2);
+		board.play(2, 0, -1);
+		board.play(2, 1, -1);
+		board.play(2, 2, -1);
 		
-		assertEquals(board.winner(), 2);
+		assertEquals(board.winner(), -1);
 		assertTrue(board.isOver());
 	}
 	
@@ -105,12 +105,12 @@ class BoardTest {
 	void testReset() {
 		Board board = new Board(root);
 		
-		board.play(0, 0, 2);
+		board.play(0, 0, -1);
 		board.play(2, 0, 1);
-		board.play(0, 1, 2);
-		board.play(0, 2, 2);
+		board.play(0, 1, -1);
+		board.play(0, 2, -1);
 		
-		List<Integer> mainBoardWon = board.getMajorPositionsWithState(2);
+		List<Integer> mainBoardWon = board.getMajorPositionsWithState(-1);
 		assertEquals(mainBoardWon, Arrays.asList(0));
 		
 		List<Pair<Integer, Integer>> movesAvailables = board.getAvailablePosition();
@@ -118,7 +118,7 @@ class BoardTest {
 		
 		board.reset();
 		
-		mainBoardWon = board.getMajorPositionsWithState(2);
+		mainBoardWon = board.getMajorPositionsWithState(-1);
 		assertEquals(mainBoardWon.size(), 0);
 	}
 	
@@ -126,12 +126,12 @@ class BoardTest {
 	void testGetPosition() {
 		Board board = new Board(root);
 		
-		board.play(0, 0, 2);
+		board.play(0, 0, -1);
 		board.play(2, 0, 1);
-		board.play(0, 1, 2);
-		board.play(0, 2, 2);
+		board.play(0, 1, -1);
+		board.play(0, 2, -1);
 		
-		List<Pair<Integer, Integer>> positionsConquered = board.getPositionsWithState(2);
+		List<Pair<Integer, Integer>> positionsConquered = board.getPositionsWithState(-1);
 		assertEquals(positionsConquered.size(), 3);
 		assertEquals(positionsConquered.stream().map(position -> position.second()).collect(Collectors.toList()), Arrays.asList(0, 1, 2));
 	}
@@ -141,41 +141,41 @@ class BoardTest {
 	{
 		Board board = new Board(root);
 		
-		board.play(0, 0, 2);
+		board.play(0, 0, -1);
 		board.play(2, 0, 1);
-		board.play(0, 1, 2);
-		board.play(0, 2, 2);
+		board.play(0, 1, -1);
+		board.play(0, 2, -1);
 		
 		Board copy = board.Clone();
 		
 		// update only the copy to check that only the copy changed
-		copy.play(1, 0, 2);  // col 3 row 0 in absolute
-		copy.play(1, 1, 2);  // col 4 row 0 in absolute
-		copy.play(1, 2, 2);  // col 5 row 0 in absolute
+		copy.play(1, 0, -1);  // col 3 row 0 in absolute
+		copy.play(1, 1, -1);  // col 4 row 0 in absolute
+		copy.play(1, 2, -1);  // col 5 row 0 in absolute
 		
 		// check that the initial board did not change
-		List<Pair<Integer, Integer>> positionsConquered = board.getPositionsWithState(2);
+		List<Pair<Integer, Integer>> positionsConquered = board.getPositionsWithState(-1);
 		assertEquals(positionsConquered.size(), 3);
 		assertEquals(positionsConquered.stream().map(position -> position.second()).collect(Collectors.toList()), Arrays.asList(0, 1, 2));
 		
-		List<Integer> mainBoardWon = board.getMajorPositionsWithState(2);
+		List<Integer> mainBoardWon = board.getMajorPositionsWithState(-1);
 		assertEquals(mainBoardWon.size(), 1);
 		
 		// check that the copy is updated
-		positionsConquered = copy.getPositionsWithState(2);
+		positionsConquered = copy.getPositionsWithState(-1);
 		assertEquals(positionsConquered.size(), 6);
 		assertEquals(positionsConquered.stream().map(position -> position.second()).collect(Collectors.toList()), Arrays.asList(0, 1, 2, 3, 4, 5));
 		
-		mainBoardWon = copy.getMajorPositionsWithState(2);
+		mainBoardWon = copy.getMajorPositionsWithState(-1);
 		assertEquals(mainBoardWon.size(), 2);
 		
 		// check reset
 		copy.reset();
 		
-		mainBoardWon = copy.getMajorPositionsWithState(2);
+		mainBoardWon = copy.getMajorPositionsWithState(-1);
 		assertEquals(mainBoardWon.size(), 0);
 		
-		mainBoardWon = board.getMajorPositionsWithState(2);
+		mainBoardWon = board.getMajorPositionsWithState(-1);
 		assertEquals(mainBoardWon.size(), 1);
 	}
 }

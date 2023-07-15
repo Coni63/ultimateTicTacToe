@@ -39,7 +39,7 @@ public class BoardRenderer extends PApplet {
 		this.makeGrid();
 		this.makeHeader();
 
-		for(Pair<Integer, Integer> p: this.refBoard.getPositionsWithState(2)) {
+		for(Pair<Integer, Integer> p: this.refBoard.getPositionsWithState(-1)) {
 			this.makeCross(p.first(), p.second());
 		}
 		
@@ -47,7 +47,7 @@ public class BoardRenderer extends PApplet {
 			this.makeCircle(p.first(), p.second());
 		}
 		
-		for(Integer p: this.refBoard.getMajorPositionsWithState(2)) {
+		for(Integer p: this.refBoard.getMajorPositionsWithState(-1)) {
 			this.makeLargeCross((int)(p/3), p%3);
 		}
 		

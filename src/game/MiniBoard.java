@@ -8,12 +8,12 @@ import java.util.List;
 
 
 public class MiniBoard {
-	private List<List<Integer>> states;      // list of index with every states
-	private Map<Integer, MiniBoard> childs;  // Dictionary of moves ->  Board state
+	private Map<Integer, List<Integer>> states; // list of index with every states
+	private Map<Integer, MiniBoard> childs;     // Dictionary of moves ->  Board state
 	public boolean isOver;
 	public int winner; 
-	public int[] grid;                      // values of the grid flatten
-	public String hash;              // simple hash used to handle duplicated State
+	public int[] grid;                          // values of the grid flatten
+	public String hash;                         // simple hash used to handle duplicated State
 	
 	public MiniBoard(int[] grid)
 	{
@@ -27,7 +27,7 @@ public class MiniBoard {
 	public MiniBoard()
 	{
 		this.grid = new int[9];
-		this.hash = "000000000";
+		this.hash = getHashFromArray(this.grid);
 		this.initBoard();
 	}
 	
@@ -42,7 +42,7 @@ public class MiniBoard {
 	public static String getHashFromArray(int[] grid)
 	{
 		return Arrays.stream(grid)
-        .mapToObj(String::valueOf)
+        .mapToObj(x -> x == 1 ? "X" : x == -1 ? "O" : "-")
         .reduce((a, b) -> a.concat(b))
         .get();
 	}
@@ -69,10 +69,10 @@ public class MiniBoard {
 	{
 		// compute the index of every values in the array
 		// faster for the bot later on
-		this.states = new ArrayList<List<Integer>>();
-		this.states.add(new ArrayList<Integer>());   // placeholder for free cells index
-		this.states.add(new ArrayList<Integer>());   // placeholder for team 1
-		this.states.add(new ArrayList<Integer>());   // placeholder for team 2
+		this.states = new HashMap<Integer, List<Integer>>();
+		this.states.put(0, new ArrayList<Integer>());   // placeholder for free cells index
+		this.states.put(1, new ArrayList<Integer>());   // placeholder for team 1
+		this.states.put(-1, new ArrayList<Integer>());   // placeholder for team 2
 		
 		for (int i = 0; i < 9; i++)
 		{
@@ -89,9 +89,9 @@ public class MiniBoard {
         	this.isOver = true;
         	this.states.get(0).clear();
         }
-        else if (this.isWinner(2)) 
+        else if (this.isWinner(-1)) 
         {
-        	this.winner = 2;
+        	this.winner = -1;
         	this.isOver = true;
         	this.states.get(0).clear();
         }

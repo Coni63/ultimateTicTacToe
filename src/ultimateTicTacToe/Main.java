@@ -21,8 +21,8 @@ public class Main {
 		Board board = new Board(root);
 		BoardRenderer renderer = new BoardRenderer(board);
 		
-		AgentRandom agent1 = new AgentRandom(1, board);
-		AgentNaive1 agent2 = new AgentNaive1(2, board);
+		AgentMCTS1 agent1 = new AgentMCTS1(1, board);
+		AgentNaive1 agent2 = new AgentNaive1(-1, board);
 		
 		Simulator simulator = new Simulator(board, agent1, agent2, renderer);
 		

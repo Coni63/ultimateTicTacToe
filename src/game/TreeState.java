@@ -23,6 +23,8 @@ public class TreeState {
 		Queue<MiniBoard> to_process = new LinkedList<MiniBoard>();  // queue of boards to evaluate -- BFS 
 		to_process.add(root);
 		
+		int[] teams = new int[] {-1, 1};
+		
 		while (!to_process.isEmpty())
 		{
 			MiniBoard currentBoard = to_process.remove();
@@ -33,7 +35,7 @@ public class TreeState {
 			}
 			
 			// compute every childs
-			for (int team = 1; team < 3; team++)
+			for (int team: teams)
 			{
 				for (int index = 0; index < 9; index++)
 				{
