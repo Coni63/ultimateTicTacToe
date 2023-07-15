@@ -27,7 +27,7 @@ public class AgentNaive1 extends AbstractAgent {
 			int captured = copy.getMajorPositionsWithState(team).size();
  			if (captured > bestScore)
 			{
- 				captured = bestScore;
+ 				bestScore = captured;
  				bestMove = position;
 			}
 		}
