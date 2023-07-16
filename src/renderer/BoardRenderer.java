@@ -72,7 +72,8 @@ public class BoardRenderer extends PApplet {
 		
 		textAlign(RIGHT);
 		text(this.name2, 10 * this.width, this.width); 
-		text(this.score2, 10 * this.width, this.width + 48); 
+		text(this.score2, 10 * this.width, this.width + 48);
+		_drawCross(10 * this.width - 100, this.width + 32, 12, 4);
 		
 		textAlign(CENTER);
 		text("Tie", (int)(5.5 * this.width), this.width); 
@@ -81,6 +82,7 @@ public class BoardRenderer extends PApplet {
 		textAlign(LEFT);
 		text(this.name1, width, width);
 		text(this.score1, width, width + 48); 
+		_drawCircle(this.width + 100, this.width + 32, 12, 4);
 	}
 	
 	private void makeGrid() {				
@@ -95,61 +97,43 @@ public class BoardRenderer extends PApplet {
 	}
 	
 	private void makeCross(int row, int col) {
-		int offset = 10;
+		int offset = 10;		
+		int center_y = (int)(this.width * (row + 1.5)) + header;
+		int center_x = (int)(this.width * (col + 1.5));
+		int width = (this.width - 2 * offset) / 2;
 		
-		stroke(161, 161, 14);
-		strokeWeight(4);
-		
-		int top = this.width * (row+1) + offset + header;
-		int left =  this.width * (col+1) + offset;
-		
-		line(left, top, left + this.width - (2 * offset), top + this.width - (2 * offset));
-		line(left, top + this.width - (2 * offset), left + this.width - (2 * offset), top);
+		_drawCross(center_x, center_y, width, 4);
 	}
 	
 	private void makeCircle(int row, int col) {
-		int offset = 10;
-		
-		stroke(14, 161, 161);
-		strokeWeight(4);
-		noFill();
-		
+		int offset = 10;		
 		int center_y = (int) (this.width * (row + 1.5)) + header;
 		int center_x =  (int) (this.width * (col + 1.5));
-		int radius = this.width - (2 * offset);
-		
-		ellipse(center_x, center_y, radius, radius);
+		int radius = (this.width - (2 * offset)) / 2;
+
+		_drawCircle(center_x, center_y, radius, 4);
 	}
 	
 	private void makeLargeCross(int row, int col) {
-		int offset = 20;
-		
 		this.addOpacity(row, col);
 		
-		stroke(161, 161, 14);
-		strokeWeight(8);
+		int offset = 20;			
+		int center_y = (int)(this.width * (3*row + 2.5)) + header;
+		int center_x = (int)(this.width * (3*col + 2.5));
+		int width = (3 * this.width - 2 * offset) / 2;
 		
-		int top = this.width * (3*row+1) + offset + header;
-		int left =  this.width * (3*col+1) + offset;
-		
-		line(left, top, left + this.width * 3 - (2 * offset), top + this.width * 3 - (2 * offset));
-		line(left, top + this.width * 3 - (2 * offset), left + this.width * 3 - (2 * offset), top);
+		_drawCross(center_x, center_y, width, 8);
 	}
 	
 	private void makeLargeCircle(int row, int col) {
-		int offset = 20;
-		
 		this.addOpacity(row, col);
 
-		stroke(14, 161, 161);
-		strokeWeight(8);
-		noFill();
-		
+		int offset = 20;
 		int center_y = (int) (this.width * (3*row + 2.5)) + header;
 		int center_x =  (int) (this.width * (3*col + 2.5));
-		int radius = this.width * 3 - (2 * offset);
-		
-		ellipse(center_x, center_y, radius, radius);
+		int radius = (this.width * 3 - (2 * offset)) / 2;
+
+		_drawCircle(center_x, center_y, radius, 8);
 	}
 	
 	private void addOpacity(int row, int col)
@@ -167,5 +151,23 @@ public class BoardRenderer extends PApplet {
 	    if (keyCode == ESC) {
 	    	exit(); // Terminate the sketch and stop the program
 	    }
+	}
+	
+	private void _drawCross(int centerX, int centerY, int halfSize, int weight)
+	{
+		stroke(161, 161, 14);
+		strokeWeight(weight);
+		
+		line(centerX - halfSize, centerY - halfSize, centerX + halfSize, centerY + halfSize);
+		line(centerX - halfSize, centerY + halfSize, centerX + halfSize, centerY - halfSize);
+	}
+	
+	private void _drawCircle(int centerX, int centerY, int radius, int weight)
+	{
+		stroke(14, 161, 161);
+		strokeWeight(weight);
+		noFill();
+		
+		ellipse(centerX, centerY, 2 * radius, 2 * radius);
 	}
 }
